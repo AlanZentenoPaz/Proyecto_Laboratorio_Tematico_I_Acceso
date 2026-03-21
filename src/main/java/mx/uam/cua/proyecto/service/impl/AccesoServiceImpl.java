@@ -1,7 +1,6 @@
 package mx.uam.cua.proyecto.service.impl;
 
 import mx.uam.cua.proyecto.dto.AccesoDTO;
-import mx.uam.cua.proyecto.entity.Acceso;
 import mx.uam.cua.proyecto.entity.Alumno;
 import mx.uam.cua.proyecto.entity.PuntoAcceso;
 import mx.uam.cua.proyecto.repository.AccesoRepository;
