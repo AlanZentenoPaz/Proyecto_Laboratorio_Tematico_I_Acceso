@@ -14,4 +14,4 @@ public interface AlumnoService {
     List<AlumnoDTO> findByLicenciatura(String licenciatura);
     List<AlumnoDTO> findByEstatusAcademico(String estatus);
     List<AlumnoDTO> findByEstadoCuenta(String estado);
-} 
+}
