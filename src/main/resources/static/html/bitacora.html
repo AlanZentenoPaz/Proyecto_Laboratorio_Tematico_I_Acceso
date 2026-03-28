@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora de Administrador - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+    <style>
+        /* Estilos específicos para la bitácora */
+        .bitacora-container {
+            padding: 20px;
+        }
+
+        .bitacora-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .bitacora-title {
+            font-size: 24px;
+            color: #000000;
+            border-left: 4px solid #FF6B00;
+            padding-left: 15px;
+        }
+
+        .filters-section {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #000000;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #FF6B00;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            padding: 8px 20px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-export {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #218838;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .bitacora-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .bitacora-table thead {
+            background: #000000;
+            color: white;
+        }
+
+        .bitacora-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .bitacora-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+
+        .bitacora-table tbody tr:hover {
+            background: #fff5e8;
+            cursor: pointer;
+        }
+
+        .bitacora-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .accion-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .accion-alta {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .accion-modificacion {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .accion-eliminacion {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .accion-credencial {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .accion-facial {
+            background: #e2d5f1;
+            color: #4a1d6d;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .pagination button {
+            padding: 8px 15px;
+            background: #FF6B00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #e65c00;
+            transform: translateY(-2px);
+        }
+
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .stats-info {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .total-registros {
+            font-weight: bold;
+            color: #FF6B00;
+        }
+
+        @media (max-width: 768px) {
+            .bitacora-table th,
+            .bitacora-table td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bitacora-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-buttons {
+                justify-content: stretch;
+            }
+
+            .filter-buttons .btn-small {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="bitacora-container">
+            <div class="bitacora-header">
+                <h1 class="bitacora-title">Bitácora de Administrador</h1>
+                <button class="btn btn-back btn-small" onclick="window.location.href='dashboard.html'">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+
+            <!-- Filtros de búsqueda -->
+            <div class="filters-section">
+                <h3 style="margin-bottom: 15px; color: #000000;">Filtros de búsqueda</h3>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Fecha Inicio:</label>
+                        <input type="date" id="fecha-inicio">
+                    </div>
+                    <div class="filter-group">
+                        <label>Fecha Fin:</label>
+                        <input type="date" id="fecha-fin">
+                    </div>
+                    <div class="filter-group">
+                        <label>Entidad Afectada:</label>
+                        <select id="filtro-entidad">
+                            <option value="">Todas</option>
+                            <option value="Alumno">Alumno</option>
+                            <option value="Credencial">Credencial</option>
+                            <option value="Registro Facial">Registro Facial</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Acción:</label>
+                        <select id="filtro-accion">
+                            <option value="">Todas</option>
+                            <option value="Alta">Alta</option>
+                            <option value="Modificación">Modificación</option>
+                            <option value="Eliminación">Eliminación</option>
+                            <option value="Credencial">Credencial</option>
+                            <option value="Facial">Facial</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn-small btn-primary" onclick="filtrarBitacora()">🔍 Aplicar Filtros</button>
+                    <button class="btn-small btn-secondary" onclick="limpiarFiltros()">🗑️ Limpiar Filtros</button>
+                    <button class="btn-small btn-export" onclick="exportarBitacora()">📥 Exportar a CSV</button>
+                </div>
+            </div>
+
+            <!-- Tabla de bitácora -->
+            <div class="stats-info">
+                <span>📋 Registros de actividad del sistema</span>
+                <span class="total-registros" id="total-registros">Total: 0 registros</span>
+            </div>
+
+            <div class="table-container">
+                <table class="bitacora-table">
+                    <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Acción</th>
+                        <th>Entidad Afectada</th>
+                        <th>Descripción</th>
+                        <th>Administrador</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="bitacora-table-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <div class="loading"></div>
+                            Cargando registros...
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    // Cargar bitácora al iniciar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarBitacora();
+    });
+
+    // Actualizar contador de registros visibles después de filtrar
+    function actualizarContadorRegistros() {
+        const rows = document.querySelectorAll('#bitacora-table-body tr');
+        const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none' && row.id !== 'no-results-message' && row.id !== 'loading-row');
+        const totalRegistros = visibleRows.length;
+        const totalElement = document.getElementById('total-registros');
+        if (totalElement) {
+            totalElement.textContent = `Total: ${totalRegistros} registros`;
+        }
+    }
+
+    // Sobrescribir la función mostrarRegistrosBitacora para incluir el contador
+    const originalMostrarRegistrosBitacora = mostrarRegistrosBitacora;
+    window.mostrarRegistrosBitacora = function(registros) {
+        originalMostrarRegistrosBitacora(registros);
+        setTimeout(actualizarContadorRegistros, 100);
+    };
+
+    // Sobrescribir filtrarBitacora para actualizar contador
+    const originalFiltrarBitacora = filtrarBitacora;
+    window.filtrarBitacora = function() {
+        originalFiltrarBitacora();
+        actualizarContadorRegistros();
+    };
+
+    // Sobrescribir limpiarFiltros para actualizar contador
+    const originalLimpiarFiltros = limpiarFiltros;
+    window.limpiarFiltros = function() {
+        originalLimpiarFiltros();
+        actualizarContadorRegistros();
+    };
+</script>
+</body>
+</html>
