@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso QR - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/alumno-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM Cuajimalpa">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="welcome-title">Acceso mediante Código QR</h1>
+        <p class="subtitle">Por favor coloca tu credencial en el recuadro y espera a ser escaneado</p>
+
+        <div class="scanner-container">
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+            </div>
+
+            <div class="manual-input">
+                <label>O ingresa manualmente el código QR:</label>
+                <input type="text" id="codigo-manual" placeholder="Ingresa el código QR">
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <button class="btn btn-primary" onclick="verificarAccesoQR(tipoAcceso)">Verificar Acceso</button>
+        </div>
+
+        <button class="btn btn-back" onclick="window.location.href='ingresar.html'">Regresar</button>
+    </div>
+</div>
+
+<script>
+    // Obtener tipo de acceso de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipoAcceso = urlParams.get('tipo') || 'ingreso';
+
+    // Iniciar cámara al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        startCamera();
+
+        // Detectar Enter en el input manual
+        const manualInput = document.getElementById('codigo-manual');
+        if (manualInput) {
+            manualInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verificarAccesoQR(tipoAcceso);
+                }
+            });
+        }
+    });
+</script>
+<script src="/js/alumno-script.js"></script>
+</body>
+</html>

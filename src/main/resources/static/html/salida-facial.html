@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salida Facial - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/alumno-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM Cuajimalpa">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="welcome-title">Salida mediante Escaneo Facial</h1>
+        <p class="subtitle">Por favor coloca tu rostro en el recuadro y espera a ser escaneado</p>
+
+        <div class="scanner-container">
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+            </div>
+
+            <div class="manual-input">
+                <label>O ingresa manualmente tu plantilla facial:</label>
+                <input type="text" id="plantilla-manual" placeholder="Ingresa el código de tu plantilla facial">
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <button class="btn btn-primary" onclick="verificarSalidaFacial()">Verificar Salida</button>
+        </div>
+
+        <button class="btn btn-back" onclick="window.location.href='salir.html'">Regresar</button>
+    </div>
+</div>
+
+<script src="/js/alumno-script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        startCamera();
+        const manualInput = document.getElementById('plantilla-manual');
+        if (manualInput) {
+            manualInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verificarSalidaFacial();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
