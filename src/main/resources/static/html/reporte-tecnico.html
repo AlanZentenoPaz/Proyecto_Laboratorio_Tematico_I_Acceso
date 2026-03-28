@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Técnico - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/alumno-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM Cuajimalpa">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="welcome-title">Reporte de Problema Técnico</h1>
+        <p class="subtitle">Por favor, describe el problema que estás experimentando</p>
+
+        <form id="reporte-form" onsubmit="event.preventDefault(); enviarReporte();">
+            <div class="form-group">
+                <label>Fecha:</label>
+                <input type="date" id="fecha" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Hora:</label>
+                <input type="time" id="hora" disabled>
+            </div>
+
+            <div class="form-group">
+                <label>Número de Torniquete donde se presenta la falla:</label>
+                <select id="numero-torniquete" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="1">Torniquete 1</option>
+                    <option value="2">Torniquete 2</option>
+                    <option value="3">Torniquete 3</option>
+                    <option value="4">Torniquete 4</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Reporta:</label>
+                <select id="reporta" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Alumno">Alumno</option>
+                    <option value="Profesor">Profesor</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Descripción del problema:</label>
+                <textarea id="descripcion" placeholder="Describa detalladamente el problema técnico..." required></textarea>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                <button type="button" class="btn btn-back" onclick="window.location.href='bienvenida.html'">Regresar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initReporteForm();
+    });
+</script>
+<script src="/js/alumno-script.js"></script>
+</body>
+</html>
