@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Administrador UAM</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1 class="form-title">Panel de Control Principal</h1>
+            <div class="welcome-message" id="welcome-message"></div>
+            <p class="subtitle">Seleccione la acción que desea realizar</p>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="alumnos-activos">0</div>
+                <div class="stat-label">Alumnos Activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="credenciales-activas">0</div>
+                <div class="stat-label">Credenciales Activas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="registros-faciales">0</div>
+                <div class="stat-label">Registros Faciales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="puntos-acceso">0</div>
+                <div class="stat-label">Puntos de Acceso</div>
+            </div>
+        </div>
+
+        <div class="access-section">
+            <h2 class="access-title">Accesos Directos</h2>
+            <div class="access-grid">
+                <div class="access-card" onclick="redirectTo('alta-alumno')">
+                    <div class="access-icon">👨‍🎓</div>
+                    <h3>Dar Alta Alumno</h3>
+                    <p>Registrar un nuevo alumno en el sistema</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('baja-alumno')">
+                    <div class="access-icon">🚫</div>
+                    <h3>Dar de Baja Alumno</h3>
+                    <p>Dar de baja a un alumno existente</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('actualizar-alumno')">
+                    <div class="access-icon">✏️</div>
+                    <h3>Actualizar Datos Alumno</h3>
+                    <p>Modificar información de alumnos</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('administrar-credencial')">
+                    <div class="access-icon">📱</div>
+                    <h3>Administrar Credencial Alumno</h3>
+                    <p>Gestionar credenciales QR</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('administrar-facial')">
+                    <div class="access-icon">👤</div>
+                    <h3>Administrar Registro Facial Alumno</h3>
+                    <p>Gestionar registros faciales</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('historial-entradas')">
+                    <div class="access-icon">📥</div>
+                    <h3>Historial de Entradas</h3>
+                    <p>Consultar registros de ingreso</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('historial-salidas')">
+                    <div class="access-icon">📤</div>
+                    <h3>Historial de Salidas</h3>
+                    <p>Consultar registros de salida</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('reportes-tecnicos')">
+                    <div class="access-icon">🔧</div>
+                    <h3>Reportes Técnicos</h3>
+                    <p>Ver reportes de problemas</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('bitacora')">
+                    <div class="access-icon">📋</div>
+                    <h3>Bitácora de Administrador</h3>
+                    <p>Historial de actividades</p>
+                </div>
+
+                <div class="access-card" onclick="redirectTo('puntos-acceso')">
+                    <div class="access-icon">📍</div>
+                    <h3>Puntos de Acceso</h3>
+                    <p>Gestionar puntos de acceso</p>
+                </div>
+
+                <div class="access-card" onclick="cerrarSesion()">
+                    <div class="access-icon">🚪</div>
+                    <h3>Salir del Sistema</h3>
+                    <p>Cerrar sesión</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    // Cargar dashboard al iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarDashboard();
+    });
+</script>
+</body>
+</html>
