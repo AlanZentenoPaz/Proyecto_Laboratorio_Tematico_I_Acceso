@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Credencial - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="bitacora-container">
+            <div class="bitacora-header">
+                <h1 class="bitacora-title">Administrar Credencial</h1>
+                <button class="btn btn-back btn-small" onclick="window.location.href='dashboard.html'">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+
+            <!-- Sección de búsqueda -->
+            <div class="search-section">
+                <div class="form-group">
+                    <label>Ingrese la matrícula del alumno:</label>
+                    <input type="text" id="matricula" placeholder="Ej: 223456789">
+                </div>
+                <button class="btn btn-primary btn-search" onclick="buscarAlumno()">Buscar Alumno</button>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <!-- Contenedor para información del alumno y credencial -->
+            <div id="alumno-container" style="display: none;"></div>
+
+            <!-- Contenedor para formulario de credencial -->
+            <div id="credencial-form" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+</body>
+</html>

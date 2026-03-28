@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salir - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/alumno-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM Cuajimalpa">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="welcome-title">Salida de la Unidad</h1>
+        <p class="subtitle">Seleccione el método de autenticación</p>
+
+        <div class="access-options">
+            <div class="access-card" onclick="window.location.href='salida-qr.html'">
+                <div class="access-icon">📱</div>
+                <div class="access-title">Salida mediante Código QR</div>
+            </div>
+            <div class="access-card" onclick="window.location.href='salida-facial.html'">
+                <div class="access-icon">👤</div>
+                <div class="access-title">Salida mediante Escaneo Facial</div>
+            </div>
+        </div>
+
+        <button class="btn btn-back" onclick="window.location.href='bienvenida.html'">Regresar al menú principal</button>
+    </div>
+</div>
+
+<script src="/js/alumno-script.js"></script>
+</body>
+</html>
