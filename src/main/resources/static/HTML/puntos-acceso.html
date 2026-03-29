@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Puntos de Acceso - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+    <style>
+        .puntos-stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .puntos-count {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FF6B00;
+        }
+
+        .puntos-count span {
+            font-size: 24px;
+            color: #000000;
+        }
+
+        .btn-agregar {
+            background: #28a745;
+            color: white;
+            padding: 10px 25px;
+            width: auto;
+        }
+
+        .btn-agregar:hover {
+            background: #218838;
+        }
+
+        .puntos-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .puntos-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .puntos-table thead {
+            background: #000000;
+            color: white;
+        }
+
+        .puntos-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .puntos-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .puntos-table tbody tr:hover {
+            background: #fff5e8;
+        }
+
+        .puntos-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-tipo {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-principal {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .badge-secundario {
+            background: #e2d5f1;
+            color: #4a1d6d;
+        }
+
+        .badge-activo {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-inactivo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-editar {
+            background: #FF6B00;
+            color: white;
+            padding: 5px 12px;
+            font-size: 12px;
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .btn-editar:hover {
+            background: #e65c00;
+        }
+
+        .btn-eliminar {
+            background: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            font-size: 12px;
+            width: auto;
+        }
+
+        .btn-eliminar:hover {
+            background: #c82333;
+        }
+
+        .modal-punto {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-punto-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+
+        .modal-punto-header {
+            background: #FF6B00;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-punto-header h3 {
+            margin: 0;
+            color: white;
+        }
+
+        .modal-punto-close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .modal-punto-close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-punto-body {
+            padding: 20px;
+        }
+
+        .modal-punto-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .no-puntos {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-puntos .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="bitacora-container">
+            <div class="bitacora-header">
+                <h1 class="bitacora-title">📍 Administrar Puntos de Acceso</h1>
+                <button class="btn btn-back btn-small" onclick="window.location.href='dashboard.html'">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <div class="puntos-stats">
+                <div class="puntos-count">
+                    📊 Total de puntos de acceso: <span id="total-puntos">0</span>
+                </div>
+                <button class="btn btn-agregar" onclick="abrirModalAgregar()">+ Agregar Punto de Acceso</button>
+            </div>
+
+            <div class="puntos-table-container">
+                <table class="puntos-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Ubicación</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="puntos-table-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <div class="loading"></div>
+                            Cargando puntos de acceso...
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-punto" class="modal-punto">
+    <div class="modal-punto-content">
+        <div class="modal-punto-header">
+            <h3 id="modal-titulo">Agregar Punto de Acceso</h3>
+            <span class="modal-punto-close" onclick="cerrarModalPunto()">&times;</span>
+        </div>
+        <div class="modal-punto-body">
+            <form id="punto-form" onsubmit="event.preventDefault(); guardarPuntoAcceso();">
+                <input type="hidden" id="punto-id" value="">
+
+                <div class="form-group">
+                    <label>Nombre <span class="required">*</span></label>
+                    <input type="text" id="nombre" placeholder="Ej: Torniquete Principal Norte" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ubicación <span class="required">*</span></label>
+                    <input type="text" id="ubicacion" placeholder="Ej: Entrada principal, Edificio A" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo <span class="required">*</span></label>
+                        <select id="tipo" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Principal">Principal</option>
+                            <option value="Secundario">Secundario</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estado <span class="required">*</span></label>
+                        <select id="estado" required>
+                            <option value="">Seleccione un estado</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="message-modal" class="message-box" style="display: none;"></div>
+            </form>
+        </div>
+        <div class="modal-punto-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalPunto()">Cancelar</button>
+            <button class="btn btn-primary btn-small" onclick="guardarPuntoAcceso()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-eliminar" class="modal-punto">
+    <div class="modal-punto-content">
+        <div class="modal-punto-header" style="background: #dc3545;">
+            <h3>⚠️ Confirmar Eliminación</h3>
+            <span class="modal-punto-close" onclick="cerrarModalEliminar()">&times;</span>
+        </div>
+        <div class="modal-punto-body">
+            <p>¿Está seguro de que desea eliminar este punto de acceso?</p>
+            <p style="color: #dc3545; font-size: 14px; margin-top: 10px;">
+                <strong>Advertencia:</strong> Esta acción eliminará el punto de acceso del sistema y quedará registrado en la bitácora.
+            </p>
+            <div id="punto-eliminar-info" style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+            </div>
+            <div id="message-eliminar" class="message-box" style="display: none;"></div>
+        </div>
+        <div class="modal-punto-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn btn-danger btn-small" id="btn-confirmar-eliminar">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminGuardado = sessionStorage.getItem('adminActual');
+        if (!adminGuardado) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        if (typeof cargarPuntosAccesoAdmin === 'function') {
+            cargarPuntosAccesoAdmin();
+        } else {
+            console.error('La función cargarPuntosAccesoAdmin no está definida');
+            document.getElementById('puntos-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <div class="icon">⚠️</div>
+                            <p>Error al cargar la página. Por favor, recargue.</p>
+                            <button class="btn btn-primary btn-small" onclick="location.reload()">Recargar</button>
+                        </td>
+                    </tr>
+                `;
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Salidas - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="bitacora-container">
+            <div class="bitacora-header">
+                <h1 class="bitacora-title">📤 Historial de Salidas</h1>
+                <button class="btn btn-back btn-small" onclick="window.location.href='dashboard.html'">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <div id="historial-container"></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-alumno" class="modal-alumno">
+    <div class="modal-alumno-content">
+        <div class="modal-alumno-header">
+            <h3>👨‍🎓 Detalles del Alumno</h3>
+            <span class="modal-alumno-close" onclick="cerrarModalAlumno()">&times;</span>
+        </div>
+        <div class="modal-alumno-body">
+            <div id="alumno-detalle-container"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminGuardado = sessionStorage.getItem('adminActual');
+        if (!adminGuardado) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        if (typeof cargarHistorialSalidas === 'function') {
+            cargarHistorialSalidas();
+        } else {
+            console.error('La función cargarHistorialSalidas no está definida');
+            document.getElementById('historial-container').innerHTML = `
+                    <div class="no-reportes">
+                        <div class="icon">⚠️</div>
+                        <p>Error al cargar la página. Por favor, recargue.</p>
+                        <button class="btn btn-primary btn-small" onclick="location.reload()">Recargar</button>
+                    </div>
+                `;
+        }
+    });
+</script>
+</body>
+</html>
