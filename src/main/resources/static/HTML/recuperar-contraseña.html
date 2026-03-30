@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - Administrador UAM</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+    <style>
+        /* Estilos adicionales para la sección de eliminar cuenta */
+        .danger-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #dc3545;
+            text-align: center;
+        }
+
+        .danger-section h4 {
+            color: #dc3545;
+            margin-bottom: 15px;
+        }
+
+        .btn-danger-full {
+            background: #dc3545;
+            color: white;
+            padding: 12px 40px;
+            font-size: 16px;
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .btn-danger-full:hover {
+            background: #c82333;
+        }
+
+        .warning-text {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .separator {
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .separator::before {
+            left: 0;
+        }
+
+        .separator::after {
+            right: 0;
+        }
+
+        .separator span {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="recover-form">
+            <h1 class="form-title">Actualizar Contraseña</h1>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Ingrese sus datos para recuperar su contraseña</p>
+
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="nombre" placeholder="Ingrese su nombre">
+            </div>
+
+            <div class="form-group">
+                <label>Apellidos:</label>
+                <input type="text" id="apellidos" placeholder="Ingrese sus apellidos">
+            </div>
+
+            <div class="form-group">
+                <label>Correo Institucional:</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.uam.mx">
+            </div>
+
+            <div class="form-group">
+                <label>Usuario:</label>
+                <input type="text" id="usuario" placeholder="Ingrese su nombre de usuario">
+            </div>
+
+            <div class="form-group">
+                <label>Nueva Contraseña:</label>
+                <input type="password" id="nueva-contrasena" placeholder="Ingrese su nueva contraseña">
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar Nueva Contraseña:</label>
+                <input type="password" id="confirmar-contrasena" placeholder="Confirme su nueva contraseña">
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <button class="btn btn-primary" onclick="actualizarContrasena()">Actualizar Contraseña</button>
+
+            <button class="btn btn-secondary" onclick="window.location.href='login.html'" style="margin-top: 15px;">Volver al Inicio de Sesión</button>
+
+            <!-- Sección de Eliminar Cuenta -->
+            <div class="separator">
+                <span>⚠️ ZONA PELIGROSA ⚠️</span>
+            </div>
+
+            <div class="danger-section">
+                <h4>🗑️ Eliminar Cuenta de Administrador</h4>
+                <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
+                    Esta acción eliminará permanentemente su cuenta de administrador del sistema.
+                    <strong>Todos los registros asociados a su cuenta (alumnos registrados, credenciales autorizadas, etc.)
+                        serán transferidos a un administrador por defecto.</strong>
+                </p>
+                <button class="btn btn-danger-full" onclick="abrirModalEliminarCuenta()">Eliminar mi cuenta</button>
+                <p class="warning-text">⚠️ Esta acción es irreversible. Se requiere confirmación.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar eliminación de cuenta -->
+<div id="modal-eliminar-cuenta" class="modal-editar" style="display: none;">
+    <div class="modal-editar-content">
+        <div class="modal-editar-header" style="background: #dc3545;">
+            <h3>⚠️ Confirmar Eliminación de Cuenta</h3>
+            <span class="modal-editar-close" onclick="cerrarModalEliminarCuenta()">&times;</span>
+        </div>
+        <div class="modal-editar-body">
+            <p style="font-size: 16px; font-weight: bold; color: #dc3545; text-align: center;">
+                ¿Está ABSOLUTAMENTE SEGURO de que desea eliminar su cuenta?
+            </p>
+
+            <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #dc3545;">
+                <p><strong>⚠️ Consecuencias de esta acción:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Su cuenta de administrador será eliminada permanentemente</li>
+                    <li>No podrá acceder al sistema con estas credenciales</li>
+                    <li>Los alumnos que registró serán transferidos a un administrador por defecto</li>
+                    <li>Las credenciales que autorizó serán transferidas a un administrador por defecto</li>
+                    <li>Los registros faciales que autorizó serán transferidos a un administrador por defecto</li>
+                    <li>Los registros de bitácora quedarán con su nombre como referencia histórica</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label>Confirme su correo institucional para continuar:</label>
+                <input type="email" id="confirmar-correo-eliminar" placeholder="Ingrese su correo institucional" required>
+            </div>
+
+            <div class="form-group">
+                <label>Motivo de la eliminación de la cuenta:</label>
+                <textarea id="motivo-eliminar-cuenta" placeholder="Describa el motivo por el cual desea eliminar su cuenta..." required rows="3"></textarea>
+                <div class="field-info">Este motivo quedará registrado en la bitácora del sistema</div>
+            </div>
+
+            <div id="message-modal-eliminar-cuenta" class="message-box" style="display: none;"></div>
+        </div>
+        <div class="modal-editor-footer">
+            <button class="btn btn-secondary btn-small" onclick="cerrarModalEliminarCuenta()">Cancelar</button>
+            <button class="btn btn-danger btn-small" onclick="confirmarEliminarCuenta()">Eliminar mi cuenta</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar que los campos del formulario se validen
+        const inputs = ['nombre', 'apellidos', 'correo', 'usuario', 'nueva-contrasena', 'confirmar-contrasena'];
+        inputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('input', function() {
+                    const messageBox = document.getElementById('message-box');
+                    if (messageBox && messageBox.style.display === 'block') {
+                        messageBox.style.display = 'none';
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

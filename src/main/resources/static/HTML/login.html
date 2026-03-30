@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión - Administrador UAM</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="login-form">
+            <h1 class="form-title">Inicio de Sesión Administrador</h1>
+
+            <div class="form-group">
+                <label>Correo Institucional:</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.uam.mx">
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" id="contrasena" placeholder="Ingrese su contraseña">
+            </div>
+
+            <div class="form-options">
+                <a href="recuperar-contrasena.html" class="forgot-password">¿Olvidaste tu contraseña o quieres eliminar tu cuenta?</a>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <button class="btn btn-primary" onclick="iniciarSesion()">Iniciar Sesión</button>
+
+            <div class="register-link">
+                ¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+</body>
+</html>

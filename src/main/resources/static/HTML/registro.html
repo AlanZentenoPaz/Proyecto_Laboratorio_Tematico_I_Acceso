@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Administrador UAM</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="register-form">
+            <h1 class="form-title">Registro de Administrador</h1>
+
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="nombre" placeholder="Ingrese su nombre">
+            </div>
+
+            <div class="form-group">
+                <label>Apellidos:</label>
+                <input type="text" id="apellidos" placeholder="Ingrese sus apellidos">
+            </div>
+
+            <div class="form-group">
+                <label>Correo Institucional:</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.uam.mx">
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="tel" id="telefono" placeholder="Ingrese su número de teléfono">
+            </div>
+
+            <div class="form-group">
+                <label>Rol:</label>
+                <select id="rol">
+                    <option value="General">General</option>
+                    <option value="Sistemas">Sistemas</option>
+                    <option value="Seguridad">Seguridad</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Usuario:</label>
+                <input type="text" id="usuario" placeholder="Ingrese un nombre de usuario">
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" id="contrasena" placeholder="Ingrese su contraseña">
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar Contraseña:</label>
+                <input type="password" id="confirmar-contrasena" placeholder="Confirme su contraseña">
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <button class="btn btn-primary" onclick="registrarAdministrador()">Registrarse</button>
+
+            <button class="btn btn-secondary" onclick="window.location.href='login.html'" style="margin-top: 15px;">Volver al Inicio de Sesión</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+</body>
+</html>
