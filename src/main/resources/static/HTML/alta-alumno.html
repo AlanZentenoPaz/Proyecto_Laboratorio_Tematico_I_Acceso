@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Alta Alumno - UAM Cuajimalpa</title>
+    <link rel="stylesheet" href="/css/admin-styles.css">
+</head>
+<body>
+<div class="container container-large">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-img">
+                <img src="https://www.comunicacionsocial.uam.mx/identidaduam/images/el-emblema.jpg" alt="Logo UAM">
+            </div>
+            <div class="logo-text">
+                Universidad Autónoma Metropolitana<br>
+                <span>Unidad Cuajimalpa</span>
+            </div>
+        </div>
+        <div class="datetime">
+            <div class="date" id="current-date"></div>
+            <div class="time" id="current-time"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="bitacora-container">
+            <div class="bitacora-header">
+                <h1 class="bitacora-title">👨‍🎓 Dar Alta Alumno</h1>
+                <button class="btn btn-back btn-small" onclick="window.location.href='dashboard.html'">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+
+            <div id="message-box" class="message-box"></div>
+
+            <!-- Formulario de alta de alumno -->
+            <div class="form-container">
+                <h2 class="form-title">Registro de Nuevo Alumno</h2>
+                <p class="form-subtitle">Complete los siguientes datos para registrar un nuevo alumno en el sistema</p>
+
+                <form id="alta-alumno-form" onsubmit="event.preventDefault(); registrarAlumno();">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Matrícula <span class="required">*</span></label>
+                            <input type="text" id="matricula" placeholder="Ej: 223456789" required>
+                            <div class="field-info">Número de matrícula del alumno</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Institucional <span class="required">*</span></label>
+                            <input type="email" id="correo" placeholder="ejemplo@correo.uam.mx" required>
+                            <div class="field-info">Correo institucional @correo.uam.mx</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre <span class="required">*</span></label>
+                            <input type="text" id="nombre" placeholder="Nombre(s)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos <span class="required">*</span></label>
+                            <input type="text" id="apellidos" placeholder="Apellido Paterno Materno" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="telefono" placeholder="Ej: 5512345678">
+                            <div class="field-info">Opcional: Número de contacto</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento <span class="required">*</span></label>
+                            <input type="date" id="fecha-nacimiento" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Licenciatura <span class="required">*</span></label>
+                            <input type="text" id="licenciatura" placeholder="Ej: Ingeniería en Computación" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Trimestre Actual <span class="required">*</span></label>
+                            <input type="number" id="trimestre-actual" min="1" max="12" placeholder="Ej: 5" required>
+                            <div class="field-info">Número del trimestre (1-12)</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Estatus Académico <span class="required">*</span></label>
+                            <select id="estatus-academico" required>
+                                <option value="">Seleccione una opción</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Sin_carga">Sin Carga</option>
+                                <option value="Egresado">Egresado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado de Cuenta</label>
+                            <input type="text" value="Activa" disabled>
+                            <div class="field-info">Se asigna automáticamente como Activa</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group form-row-single">
+                            <label>Registrado por <span class="required">*</span></label>
+                            <input type="text" id="admin-registro" disabled>
+                            <div class="field-info">El alumno será registrado por el administrador de la sesión actual</div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-registrar">📝 Registrar Alumno</button>
+                        <button type="button" class="btn btn-cancelar" onclick="window.location.href='dashboard.html'">❌ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/admin-script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminGuardado = sessionStorage.getItem('adminActual');
+        if (!adminGuardado) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Mostrar el nombre del administrador en el campo bloqueado
+        const admin = JSON.parse(adminGuardado);
+        const adminRegistroInput = document.getElementById('admin-registro');
+        if (adminRegistroInput) {
+            adminRegistroInput.value = `${admin.nombre} ${admin.apellidos}`;
+        }
+
+        // Configurar fecha mínima para fecha de nacimiento (al menos 16 años atrás)
+        const fechaNacimiento = document.getElementById('fecha-nacimiento');
+        if (fechaNacimiento) {
+            const hoy = new Date();
+            const fechaMinima = new Date(hoy.getFullYear() - 100, hoy.getMonth(), hoy.getDate());
+            const fechaMaxima = new Date(hoy.getFullYear() - 16, hoy.getMonth(), hoy.getDate());
+            fechaNacimiento.max = fechaMaxima.toISOString().split('T')[0];
+            fechaNacimiento.min = fechaMinima.toISOString().split('T')[0];
+        }
+    });
+</script>
+</body>
+</html>
